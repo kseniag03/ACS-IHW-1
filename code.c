@@ -3,14 +3,30 @@
 #include <time.h>
 #include <stdint.h>
 
-const int NMAX = 1048576;
-const int ELEMENTMAX = 100;
-const int THRESHOLD = RAND_MAX - 10;
+extern const int SIZEMAX;
+extern const int VALUEMAX;
 
-int ARRAY_A[1048576];
-int ARRAY_B[1048576];
+extern int ARRAY_A[];
+extern int ARRAY_B[];
 
-int64_t timespecDifference(struct timespec a, struct timespec b) {
+// in main.c
+extern int64_t timespec_difference(struct timespec a, struct timespec b);
+extern int get_min_from_array(int n, const int arr[]);
+extern int count_if_equals_element(int n, const int arr[], int element);
+extern void fill_ARRAY_B(int n, int size, int element);
+extern int command_line_input(int *n, char** argv);
+extern void command_line_output(int n, int arr[]);
+extern int file_input(int *n,  char *filename);
+extern void file_output(int n,  char *filename);
+extern void random_generation(int *n);
+
+const int SIZEMAX = 100000;
+const int VALUEMAX = 1000;
+
+int ARRAY_A[100000];
+int ARRAY_B[100000];
+
+int64_t timespec_difference(struct timespec a, struct timespec b) {
     int64_t timeA, timeB;
     timeA = a.tv_sec;
     timeA *= 1000000000;
@@ -21,27 +37,27 @@ int64_t timespecDifference(struct timespec a, struct timespec b) {
     return timeA - timeB;
 }
 
-int getMinFromArrayA(int n) {
-    int min = ARRAY_A[0];
+int get_min_from_array(int n, const int arr[]) {
+    int min = arr[0];
     for (int i = 1; i < n; ++i) {
-        if (ARRAY_A[i] < min) {
-            min = ARRAY_A[i];
+        if (arr[i] < min) {
+            min = arr[i];
         }
     }
     return min;
 }
 
-int countIfEqualsElement(int n, int element) {
+int count_if_equals_element(int n, const int arr[], int element) {
     int cnt = 0;
     for (int i = 0; i < n; ++i) {
-        if (ARRAY_A[i] == element) {
+        if (arr[i] == element) {
             ++cnt;
         }
     }
     return cnt;
 }
 
-void fillArrayB(int n, int size, int element) {
+void fill_ARRAY_B(int n, int size, int element) {
     for (int i = 0, j = 0; i < n && j < size; ++i) {
         if (ARRAY_A[i] == element) {
             continue;
@@ -51,19 +67,20 @@ void fillArrayB(int n, int size, int element) {
     }
 }
 
-int console_input(int *n, char** argv) {
+int command_line_input(int *n, char** argv) {
     int i;
     *n = atoi(argv[2]);
-    if (*n <= 0) {
-        printf("Кол-во эл-в массива должно быть от 1 до %d\n", NMAX);
+    if (*n <= 0 || *n > SIZEMAX) {
+        printf("Кол-во эл-в массива должно быть от 1 до %d\n", SIZEMAX);
         return 1;
     }
     for (i = 0; i < *n; ++i) {
         ARRAY_A[i] = atoi(argv[i + 3]);
     }
+    return 0;
 }
 
-void console_output(int n, int arr[]) {
+void command_line_output(int n, int arr[]) {
     int i;
     printf("[ ");
     for (i = 0; i < n; ++i) {
@@ -85,8 +102,8 @@ int file_input(int *n,  char *filename) {
         fclose(file);
         return 1;
     }
-    if (*n < 0 || *n > NMAX) {
-        printf("Кол-во эл-в массива должно быть от 1 до %d\n", NMAX);
+    if (*n <= 0 || *n > SIZEMAX) {
+        printf("Кол-во эл-в массива должно быть от 1 до %d\n", SIZEMAX);
         fclose(file);
         return 1;
     }
@@ -98,32 +115,35 @@ int file_input(int *n,  char *filename) {
         }
     }
     fclose(file);
+    return 0;
 }
 
 void file_output(int n,  char *filename) {
     int i;
     FILE *file;
     if ((file = fopen(filename, "w")) != NULL) {
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < n; ++i) {
             fprintf(file, "%d ", ARRAY_B[i]);
         }
         fclose(file);
     }
 }
 
-void random_generation(int n) {
+void random_generation(int *n) {
     srand(time(NULL));
-    int i;
-    for (i = 0; i < n; ++i) {
-        ARRAY_A[i] = rand() % ELEMENTMAX;
+    *n = rand() % SIZEMAX;
+    if (*n < 1) {
+        ++*n;
     }
-    printf("\n");
+    int i;
+    for (i = 0; i < *n; ++i) {
+        ARRAY_A[i] = rand() % VALUEMAX;
+    }
 }
 
 int main (int argc, char** argv) {
     char *arg;
-    int option, seed;
-    int n, size, min;
+    int option, n, size, min;
     struct timespec start, end;
     int64_t elapsed_ns;
     // input
@@ -133,14 +153,16 @@ int main (int argc, char** argv) {
         printf("\n");
         option = atoi(arg);
         if (option == 1) {
-            console_input(&n, argv);
+            if (command_line_input(&n, argv)) {
+                return 1;
+            }
         } else if (option == 2) {
-            file_input(&n, "input.txt");
+            if (file_input(&n, "input.txt")) {
+                return 1;
+            }
         } else {
-            srand(time(NULL));
-            n = 1 + rand() % NMAX;
-            random_generation(n);
-            console_output(n, ARRAY_A);
+            random_generation(&n);
+            command_line_output(n, ARRAY_A);
         }
     } else {
         printf("No arguments");
@@ -149,16 +171,16 @@ int main (int argc, char** argv) {
     // timeStart
     clock_gettime(CLOCK_MONOTONIC, &start);
     // fill arrayB
-    min = getMinFromArrayA(n);
-    size = countIfEqualsElement(n, min);
+    min = get_min_from_array(n, ARRAY_A);
+    size = count_if_equals_element(n, ARRAY_A, min);
     size = n - size;
-    fillArrayB(n, size, min);
+    fill_ARRAY_B(n, size, min);
     // timeEnd
     clock_gettime(CLOCK_MONOTONIC, &end);
-    elapsed_ns = timespecDifference(end, start);
+    elapsed_ns = timespec_difference(end, start);
     printf("Elapsed: %ld ns", elapsed_ns);
     // output
-    console_output(size, ARRAY_B);
+    command_line_output(size, ARRAY_B);
     file_output(size, "output.txt");
     return 0;
 }

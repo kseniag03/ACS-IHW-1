@@ -7,14 +7,8 @@ const int NMAX = 1048576;
 const int ELEMENTMAX = 100;
 const int THRESHOLD = RAND_MAX - 10;
 
-//static int ARRAY[1048576];
-// copy in all separate files
-//extern int ARRAY[];
-//in main
 int ARRAY_A[1048576];
 int ARRAY_B[1048576];
-//in main
-//extern func
 
 int64_t timespecDifference(struct timespec a, struct timespec b) {
     int64_t timeA, timeB;
@@ -82,24 +76,20 @@ void console_output(int n, int arr[]) {
 int file_input(int *n,  char *filename) {
     int i;
     FILE *file;
-
     if ((file = fopen(filename, "r")) == NULL) {
         printf("Невозможно открыть файл '%s'\n", filename);
         return 1;
     }
-
     if (fscanf(file, "%d", n) < 1) {
         printf ("Ошибка чтения из файла '%s'\n", filename);
         fclose(file);
         return 1;
     }
-
     if (*n < 0 || *n > NMAX) {
         printf("Кол-во эл-в массива должно быть от 1 до %d\n", NMAX);
         fclose(file);
         return 1;
     }
-
     for (i = 0; i < *n; ++i) {
         if (fscanf(file, "%d", &ARRAY_A[i]) < 1) {
             printf("Ошибка чтения из файла '%s'\n", filename);
@@ -113,7 +103,6 @@ int file_input(int *n,  char *filename) {
 void file_output(int n,  char *filename) {
     int i;
     FILE *file;
-
     if ((file = fopen(filename, "w")) != NULL) {
         for (i = 0; i < n; i++) {
             fprintf(file, "%d ", ARRAY_B[i]);
@@ -135,10 +124,8 @@ int main (int argc, char** argv) {
     char *arg;
     int option, seed;
     int n, size, min;
-
     struct timespec start, end;
     int64_t elapsed_ns;
-
     // input
     if (argc > 1) {
         arg = argv[1];

@@ -9,12 +9,12 @@ int command_line_input(int *n, char** argv) {
     int i;
     *n = atoi(argv[2]);
     if (*n <= 0 || *n > SIZEMAX) {
-        printf("Кол-во эл-в массива должно быть от 1 до %d\n", SIZEMAX);
+        printf("The num of elems in arr must be from 1 to %d\n", SIZEMAX);
         return 1;
     }
     for (i = 0; i < *n; ++i) {
         if (argv[i + 3] == NULL) {
-            printf("Недостаточно эл-в в массиве\n");
+            printf("Not enough elems in arr\n");
             return 1;
         }
         ARRAY_A[i] = atoi(argv[i + 3]);

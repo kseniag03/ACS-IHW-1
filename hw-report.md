@@ -37,4 +37,28 @@ argv[0] -- формат ввода (1 -- console, 2 -- file, else -- random gene
 выводится в консоль и в файл "output.txt" <br>
 
 
+компиляция кусков кода и линковка: <br>
+
+`gcc -masm=intel \
+    -fno-asynchronous-unwind-tables \
+    -fno-jump-tables \
+    -fno-stack-protector \
+    -fno-exceptions \
+    ./main.c \
+    -S -o ./main.s`
+<br>
+`gcc ./main.s -c -o ./main.o`
+
+command_line_input.c <br>
+command_line_output.c <br>
+count_if_equals_element.c <br>
+file_input.c <br>
+file_output.c <br>
+fill_ARRAY_B.c <br>
+get_min_from_array.c <br>
+random_generation.c <br>
+timespec_difference.c <br>
+
+`gcc -lc main.o command_line_input.o command_line_output.o count_if_equals_element.o file_input.o file_output.o fill_ARRAY_B.o get_min_from_array.o random_generation.o timespec_difference.o -o foo.exe`
+
 

@@ -71,4 +71,5 @@ timespec_difference.c <br>
 
 `gcc -lc main.o command_line_input.o command_line_output.o count_if_equals_element.o file_input.o file_output.o fill_ARRAY_B.o get_min_from_array.o random_generation.o timespec_difference.o -o foo.exe`
 
-
+Убираем макросы: <br>
+endbr64 <br>

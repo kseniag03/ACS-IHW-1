@@ -13,6 +13,10 @@ int command_line_input(int *n, char** argv) {
         return 1;
     }
     for (i = 0; i < *n; ++i) {
+        if (argv[i + 3] == NULL) {
+            printf("Недостаточно эл-в в массиве\n");
+            return 1;
+        }
         ARRAY_A[i] = atoi(argv[i + 3]);
     }
     return 0;

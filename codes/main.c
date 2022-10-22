@@ -43,7 +43,7 @@ int main (int argc, char** argv) {
             command_line_output(n, ARRAY_A);
         }
     } else {
-        printf("No arguments");
+        printf("No arguments\n");
         return 0;
     }
     // timeStart
@@ -56,7 +56,7 @@ int main (int argc, char** argv) {
     // timeEnd
     clock_gettime(CLOCK_MONOTONIC, &end);
     elapsed_ns = timespec_difference(end, start);
-    printf("Elapsed: %ld ns", elapsed_ns);
+    printf("Elapsed: %ld ns\n", elapsed_ns);
     // output
     command_line_output(size, ARRAY_B);
     file_output(size, "output.txt");

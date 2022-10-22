@@ -11,7 +11,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "D:/Contest_check/ACS/01/cmake-build-debug"
+			"value" : "D:/Contest_check/ACS/01/ACS-IHW-1/codes/cmake-build-debug"
 		},
 		{
 			"name" : "01_IS_TOP_LEVEL",
@@ -35,7 +35,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "D:/Contest_check/ACS/01"
+			"value" : "D:/Contest_check/ACS/01/ACS-IHW-1/codes"
 		},
 		{
 			"name" : "CMAKE_ADDR2LINE",
@@ -91,7 +91,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "d:/Contest_check/ACS/01/cmake-build-debug"
+			"value" : "d:/Contest_check/ACS/01/ACS-IHW-1/codes/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -515,7 +515,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Contest_check/ACS/01"
+			"value" : "D:/Contest_check/ACS/01/ACS-IHW-1/codes"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",

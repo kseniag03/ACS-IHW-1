@@ -9,7 +9,6 @@ extern const int VALUEMAX;
 extern int ARRAY_A[];
 extern int ARRAY_B[];
 
-// in main.c
 extern int64_t timespec_difference(struct timespec a, struct timespec b);
 extern int get_min_from_array(int n, const int arr[]);
 extern int count_if_equals_element(int n, const int arr[], int element);
@@ -146,7 +145,6 @@ int main (int argc, char** argv) {
     int option, n, size, min;
     struct timespec start, end;
     int64_t elapsed_ns;
-    // input
     if (argc > 1) {
         arg = argv[1];
         printf("arg = %s", arg);
@@ -168,18 +166,14 @@ int main (int argc, char** argv) {
         printf("No arguments");
         return 0;
     }
-    // timeStart
     clock_gettime(CLOCK_MONOTONIC, &start);
-    // fill arrayB
     min = get_min_from_array(n, ARRAY_A);
     size = count_if_equals_element(n, ARRAY_A, min);
     size = n - size;
     fill_ARRAY_B(n, size, min);
-    // timeEnd
     clock_gettime(CLOCK_MONOTONIC, &end);
     elapsed_ns = timespec_difference(end, start);
     printf("Elapsed: %ld ns", elapsed_ns);
-    // output
     command_line_output(size, ARRAY_B);
     file_output(size, "output.txt");
     return 0;

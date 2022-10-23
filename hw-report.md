@@ -431,10 +431,10 @@ main:					# тело main
 	lea	rsi, -80[rbp]			# 2-й аргумент для запуска счётчика — &end
 	call	clock_gettime@PLT		# вызов функции подсчёта времени до вывода, т.е. clock_gettime(CLOCK_MONOTONIC, &end)
 
-	mov	rdi, QWORD PTR -80[rbp]		# 1-й аргумент для подсчёта времени — ///
-	mov	rsi, QWORD PTR -72[rbp]		# 2-й аргумент для подсчёта времени — ///
-	mov	rdx, QWORD PTR -64[rbp]		# 3-й аргумент для подсчёта времени — ///
-	mov	rcx, QWORD PTR -56[rbp]		# 4-й аргумент для подсчёта времени — ///
+	mov	rdi, QWORD PTR -80[rbp]		# 1-й аргумент для подсчёта времени — end.tv_sec
+	mov	rsi, QWORD PTR -72[rbp]		# 2-й аргумент для подсчёта времени — end.tv_nsec
+	mov	rdx, QWORD PTR -64[rbp]		# 3-й аргумент для подсчёта времени — start.tv_sec
+	mov	rcx, QWORD PTR -56[rbp]		# 4-й аргумент для подсчёта времени — start.tv_nsec
 	call	timespec_difference@PLT		# вызов функции для вычисления времени заполнения массива B, т.е. timespec_difference(end, start) (4 аргумента, т.к. передаются структуры с 2-мя полями)
 	mov	QWORD PTR -32[rbp], rax		# elapsed_ns := rax (результат выполнения функции timespec_difference)
 

@@ -1,9 +1,9 @@
 #  ИДЗ №1 #
-Markdown report <br>
+## Markdown report ## <br>
 
-1. Ганина Ксения Андреевна <br>
-2. БПИ212 <br>
-3. В-13 <br>
+### 1. Ганина Ксения Андреевна ### <br>
+### 2. БПИ212 ### <br>
+### 3. Вариант-13 ### <br>
 ![image](https://user-images.githubusercontent.com/114473740/197335272-b4a5eef8-d401-4dce-ad53-26b7bfa52687.png) <br>
 
 05 <br>
@@ -18,7 +18,7 @@ Markdown report <br>
 
 ________________________
 
-4. Тесты, демонстрирующие проверку программ. <br>
+### 4. Тесты, демонстрирующие проверку программ. ### <br>
 
 Формат ввода данных <br>
 argc -- число аргументов в функции (если > 1, значит, передали аргументы) <br>
@@ -29,11 +29,14 @@ argv[1] -- формат ввода (1 -- console, 2 -- file, else -- random gene
 
 ![Screenshot from 2022-10-23 18-22-55](https://user-images.githubusercontent.com/114473740/197400720-bfa9d7c5-eec4-43e8-9dbe-990bbc1cb4e6.png)  <br>
 
-5. Результаты тестовых прогонов для различных исходных данных. <br>
+### 5. Результаты тестовых прогонов для различных исходных данных. ### <br>
 
-...  <br>
+Ввод с консоли: <br>
+![Screenshot from 2022-10-23 18-45-30](https://user-images.githubusercontent.com/114473740/197401849-27f25f57-c8ba-4c25-8f75-f8923e6701ec.png)  <br>
+Ввод из файла: <br>
+Генератор: <br>
 
-6. Исходные тексты программы на языке C. <br>
+### 6. Исходные тексты программы на языке C. ### <br>
 
 
 main.c -- основная функция
@@ -288,7 +291,7 @@ int64_t timespec_difference(struct timespec a, struct timespec b) {
 ```
 <br>
 
-7. Тексты программы на языке ассемблера, разработанной вручную или полученной после компиляции и расширенной комментариями. <br>
+### 7. Тексты программы на языке ассемблера, разработанной вручную или полученной после компиляции и расширенной комментариями. ### <br>
 
 main.s
 
@@ -535,11 +538,11 @@ command_line_input:			# тело command_line_input
 
 <br>
 
-8. Текст на ассемблере программы, полученный после компиляции программы на C. <br>
+### 8. Текст на ассемблере программы, полученный после компиляции программы на C. ### <br>
 
 Смотреть: ACS-IHW-1/codes/generated-asm-code/ <br>
 
-9. Информацию, подтверждающую выполнение задания в соответствие требованиям на предполагаемую оценку. <br>
+### 9. Информацию, подтверждающую выполнение задания в соответствие требованиям на предполагаемую оценку. ### <br>
 <br>
 
 
@@ -547,14 +550,14 @@ command_line_input:			# тело command_line_input
 
 Компиляция частей кода и линковка: <br>
 
-`gcc -masm=intel \`
-    `-fno-asynchronous-unwind-tables \`
-    `-fno-jump-tables \`
-    `-fno-stack-protector \`
-    `-fno-exceptions \`
-    `./main.c \`
-    `-S -o ./main.s`
-`gcc ./main.s -c -o ./main.o`
+`gcc -masm=intel \` <br>
+    `-fno-asynchronous-unwind-tables \` <br>
+    `-fno-jump-tables \` <br>
+    `-fno-stack-protector \` <br>
+    `-fno-exceptions \` <br>
+    `./main.c \` <br>
+    `-S -o ./main.s` <br>
+`gcc ./main.s -c -o ./main.o` <br>
 
 Аналогичные команды выполнить для всех файлов-функций: <br>
 command_line_input.c <br>
@@ -567,8 +570,8 @@ get_min_from_array.c <br>
 random_generation.c <br>
 timespec_difference.c <br>
 
-Для линковки:
-`gcc -lc main.o command_line_input.o command_line_output.o count_if_equals_element.o file_input.o file_output.o fill_ARRAY_B.o get_min_from_array.o random_generation.o timespec_difference.o -o foo.exe`
+Для линковки: <br>
+`gcc -lc main.o command_line_input.o command_line_output.o count_if_equals_element.o file_input.o file_output.o fill_ARRAY_B.o get_min_from_array.o random_generation.o timespec_difference.o -o foo.exe` <br>
 
 Убираем макросы: <br>
 endbr64, cdqe, cdq <br>

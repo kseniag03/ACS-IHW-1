@@ -317,18 +317,18 @@ int64_t timespec_difference(struct timespec a, struct timespec b) {
 
 
 
-компиляция кусков кода и линковка: <br>
+Компиляция частей кода и линковка: <br>
 
-`gcc -masm=intel \
-    -fno-asynchronous-unwind-tables \
-    -fno-jump-tables \
-    -fno-stack-protector \
-    -fno-exceptions \
-    ./main.c \
-    -S -o ./main.s`
-<br>
+`gcc -masm=intel \`
+    `-fno-asynchronous-unwind-tables \`
+    `-fno-jump-tables \`
+    `-fno-stack-protector \`
+    `-fno-exceptions \`
+    `./main.c \`
+    `-S -o ./main.s`
 `gcc ./main.s -c -o ./main.o`
 
+Аналогичные команды выполнить для всех файлов-функций: <br>
 command_line_input.c <br>
 command_line_output.c <br>
 count_if_equals_element.c <br>
@@ -339,19 +339,24 @@ get_min_from_array.c <br>
 random_generation.c <br>
 timespec_difference.c <br>
 
+Для линковки:
 `gcc -lc main.o command_line_input.o command_line_output.o count_if_equals_element.o file_input.o file_output.o fill_ARRAY_B.o get_min_from_array.o random_generation.o timespec_difference.o -o foo.exe`
 
 Убираем макросы: <br>
 endbr64, cdqe, cdq <br>
 
+Переписываем .section.data и названия меток (LC0, L1, etc.) для наглядности <br>
 
-Переписываем .section.data для наглядности <br>
 
-Изменения main: <br>
 Убираем лишние присваивания: вместо  <br>
 `mov	rax, QWORD PTR -8[rbp]` <br>
 `mov	rdi, rax` <br>
 сразу пишем <br>
 `mov	rdi, QWORD PTR -8[rbp]` <br>
 
-Также добавилось небольшое отличие от программы на Си — вывод `elapsed_ns` после выводов массива (чтобы при генерации массивов время было видно) <br>
+Изменения main: <br>
+Добавилось небольшое отличие от программы на Си — вывод `elapsed_ns` после выводов массива (чтобы при генерации массивов время было видно при выводе) <br>
+
+
+Переменную цикла i записываем в один из свободных регистров: <br>
+DWORD PTR -4[rbp] -> r12d

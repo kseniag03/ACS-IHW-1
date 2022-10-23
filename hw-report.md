@@ -21,6 +21,8 @@ ________________________
 
 ### 5. Результаты тестовых прогонов для различных исходных данных. <br> ###
 
+Тесты можно посмотреть здесь: ACS-IHW-1/tests <br>
+
 Ввод с консоли: <br>
 ![Screenshot from 2022-10-23 18-45-30](https://user-images.githubusercontent.com/114473740/197401849-27f25f57-c8ba-4c25-8f75-f8923e6701ec.png) <br>
 
@@ -45,6 +47,7 @@ ________________________
 
 ### 6. Исходные тексты программы на языке C. <br> ###
 
+Можно также посмотреть здесь: ACS-IHW-1/codes (main.c) и ACS-IHW-1/codes/funcs (все подпрограммы) <br>
 
 main.c -- основная функция
 ```c
@@ -301,6 +304,8 @@ ________________________
 
 ### 7. Тексты программы на языке ассемблера, разработанной вручную или полученной после компиляции и расширенной комментариями. <br> ###
 
+Можно также посмотреть здесь: ACS-IHW-1/codes/edited-asm-code <br>
+
 main.s
 
 ```assembly
@@ -548,7 +553,100 @@ command_line_input:			# тело command_line_input
 ```
 <br>
 
+command_line_output.s
+
+```assembly
+.intel_syntax noprefix			# intel-синтаксис
+.globl command_line_output		# точка запуска command_line_output
+.type command_line_output, @function	# объявление command_line_output как функции
+
+.section .data				# секция объявления переменных
+	bracket:	.string		"[ "
+	frmtnum:	.string		"%d "
+
+.text					# секция кода
+
+command_line_output:
+	push	rbp				# сохраняем rbp на стек
+	mov	rbp, rsp			# присваиваем rbp = rsp
+	sub	rsp, 32				# rsp -= 32 (выделение памяти на стеке)
+	mov	DWORD PTR -20[rbp], edi		# 1-й аргумент command_line_output — int n (в стеке на -20)
+	mov	QWORD PTR -32[rbp], rsi		# 2-й аргумент command_line_output — int arr[] (в стеке на -32)
+	
+	lea	rdi, bracket[rip]		# rdi := "[ " (1-й аргумент функции)
+	call	printf@PLT			# printf("[ ")
+	mov	r12d, 0				# i = 0
+	jmp	.LOOP				# переход к LOOP
+	
+.PRINTELEM:
+	mov	eax, r12d			# eax := i
+	lea	rdx, 0[0 + rax * 4]		# rdx := rax * 4
+	mov	rax, QWORD PTR -32[rbp]		# rax := n	
+	add	rax, rdx			# rax := arr[i]
+	
+	lea	rdi, frmtnum[rip]		# rdi := "%d " (1-й аргумент функции)
+	mov	esi, DWORD PTR [rax]		# esi := arr[i] (2-й аргумент функции)
+	call	printf@PLT			# printf("%d ", arr[i])
+	add	r12d, 1				# ++i
+	
+.LOOP:
+	cmp	r12d, DWORD PTR -20[rbp]	# сравнение i и n
+	jl	.PRINTELEM			# если i < n, переход в PRINTELEM
+	
+	mov	edi, 93				# передача 1-го аргумента в функцию
+	call	putchar@PLT			# выводит символ ']' (номер 93), т.е. printf("]")
+	mov	edi, 10				# передача 1-го аргумента в функцию		
+	call	putchar@PLT			# выводит символ перевода строки (номер 10), т.е. printf("\n")
+	
+	leave					# освобождает стек на выходе из функции main
+	ret					# выполняется выход из программы
+
+```
+
 <br>
+
+count_if_equals_element.s
+
+```assembly
+.intel_syntax noprefix
+.globl count_if_equals_element
+.type count_if_equals_element, @function
+
+.text
+	
+count_if_equals_element:
+	push	rbp
+	mov	rbp, rsp
+	mov	r13d, edi			# r13d = n
+	mov	r14, rsi			# r14 = int arr[]
+	mov	r15d, edx			# r15d = int element
+	
+	mov	r11d, 0				# cnt = 0
+	mov	r12d, 0				# i = 0
+	jmp	.LOOP				# переход к циклу
+	
+.INCCNT:
+	lea	rdx, 0[0 + rax * 4]		# rdx := rax * 4
+	mov	rax, r14			# rax := &arr
+	add	rax, rdx			# rax += rdx
+	mov	eax, DWORD PTR [rax]		# eax := arr[i]
+	cmp	r15d, eax			# сравнение element и arr[i]
+	jne	.INCI				# если arr[i] != elementn, переход к INCI
+	add	r11d, 1				# иначе ++cnt;
+	
+.INCI:
+	add	r12d, 1				# ++i
+	
+.LOOP:
+	cmp	r12d, r13d			# сравнение i и n
+	jl	.INCCNT				# если i < n, переход к INCCNT
+	mov	eax, r11d			# return cnt
+	pop	rbp				# очистка стека
+	ret					# выполняется выход из программы
+
+```
+<br>
+
 ________________________
 
 ### 8. Текст на ассемблере программы, полученный после компиляции программы на C. <br> ###
@@ -602,12 +700,20 @@ endbr64, cdqe, cdq <br>
 
 Критерий на 6. <br>
 Оптимизация использования регистров процессора: <br>
+// r8-r15 -- свободные регистры <br>
 Переменную цикла i записываем в один из свободных регистров: <br>
 DWORD PTR -4[rbp] -> r12d <br>
 <br>
+При редакции count_if_equals_element.s использовались: <br>
+DWORD PTR -4[rbp] -> r11d (т.к. double word, используем 0-3 bytes) <br> 
+DWORD PTR -8[rbp] -> r12d <br>
+DWORD PTR -20[rbp] -> r13d <br>
+QWORD PTR -32[rbp] -> r14 (т.к. quad word, используем 8-byte register) <br> 
+DWORD PTR -24[rbp] -> r15d <br>
 
 Критерий на 7. <br>
 Скомпилированы и отредактированы (к сожалению, не все...) программы на ассемблере, в виде 10 единиц компиляции (походу, зря...). <br>
+// но единиц компиляции получилось отредактировать больше 2-х <br>
 Реализован файловый ввод/вывод (после имени исполняемого файла в командной строке достаточно ввести символ 2). <br>
 <br>
 
@@ -618,8 +724,8 @@ DWORD PTR -4[rbp] -> r12d <br>
 <br>
 
 Критерий на 9. <br>
-Для оптимизации по скорости все части программы компилировались с флагом . <br>
-Для оптимизации по размеру все части программы компилировались с флагом . <br>
+Для оптимизации по скорости все части программы компилировались с флагом -O3. <br>
+Для оптимизации по размеру все части программы компилировались с флагом -Os. <br>
 
 Таблица сравнений приведена ниже: <br>
 | Критерий	     	| Скомпилированный Си| С оптим. -O3	   | С оптим. -Os        | Отредактированный вручную после компиляции |       
@@ -627,8 +733,9 @@ DWORD PTR -4[rbp] -> r12d <br>
 | размер асм-файла	| 15 631 байт        | 18 043 байт         | 13 603 байт         |                                            |
 | размер испол. файла	| 17 280 байт        | 17 360 байт         | 17 360 байт         |                                            |
 | время работы		| 387 918, 1 ns      | 221 510, 8 ns       | 293 939, 9 ns       |                                            |
+
 <br>
-// размер асм-файла == размер 10 файлов расширения .s (из папки generated-asm-code для Си, ...) <br>
+// размер асм-файла == размер 10 файлов расширения .s (из папки time-size-check) <br>, исполняемый файл в этой же папке
 <br>
 // время работы == усреднённое время работы 10 запусков псевдослучаного генератора (т.к. большой размер массива)
 <br>

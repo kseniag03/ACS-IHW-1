@@ -73,3 +73,13 @@ timespec_difference.c <br>
 
 Убираем макросы: <br>
 endbr64 <br>
+
+
+Переписываем .section.data для наглядности <br>
+
+Изменения main: <br>
+Убираем лишние присваивания: вместо  <br>
+`mov	rax, QWORD PTR -8[rbp]` <br>
+`mov	rdi, rax` <br>
+сразу пишем <br>
+`mov	rdi, QWORD PTR -8[rbp]` <br>

@@ -311,7 +311,7 @@ int64_t timespec_difference(struct timespec a, struct timespec b) {
 
 main.s
 
-```ams
+```assembly
 .intel_syntax noprefix			# intel-синтаксис
 .globl main				# точка запуска main
 .type main, @function			# объявление main как функции
@@ -461,7 +461,7 @@ main:					# тело main
 
 command_line_input.s
 
-```ams
+```assembly
 .intel_syntax noprefix			# intel-синтаксис
 .globl command_line_input		# точка запуска command_line_input
 .type command_line_input, @function	# объявление command_line_input как функции

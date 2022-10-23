@@ -599,6 +599,49 @@ command_line_output:
 ```
 
 <br>
+
+count_if_equals_element.s
+
+```assembly
+.intel_syntax noprefix
+.globl count_if_equals_element
+.type count_if_equals_element, @function
+
+.text
+	
+count_if_equals_element:
+	push	rbp
+	mov	rbp, rsp
+	mov	r13d, edi			# r13d = n
+	mov	r14, rsi			# r14 = int arr[]
+	mov	r15d, edx			# r15d = int element
+	
+	mov	r11d, 0				# cnt = 0
+	mov	r12d, 0				# i = 0
+	jmp	.LOOP				# переход к циклу
+	
+.INCCNT:
+	lea	rdx, 0[0 + rax * 4]		# rdx := rax * 4
+	mov	rax, r14			# rax := &arr
+	add	rax, rdx			# rax += rdx
+	mov	eax, DWORD PTR [rax]		# eax := arr[i]
+	cmp	r15d, eax			# сравнение element и arr[i]
+	jne	.INCI				# если arr[i] != elementn, переход к INCI
+	add	r11d, 1				# иначе ++cnt;
+	
+.INCI:
+	add	r12d, 1				# ++i
+	
+.LOOP:
+	cmp	r12d, r13d			# сравнение i и n
+	jl	.INCCNT				# если i < n, переход к INCCNT
+	mov	eax, r11d			# return cnt
+	pop	rbp				# очистка стека
+	ret					# выполняется выход из программы
+
+```
+<br>
+
 ________________________
 
 ### 8. Текст на ассемблере программы, полученный после компиляции программы на C. <br> ###
@@ -652,9 +695,16 @@ endbr64, cdqe, cdq <br>
 
 Критерий на 6. <br>
 Оптимизация использования регистров процессора: <br>
+// r8-r15 -- свободные регистры <br>
 Переменную цикла i записываем в один из свободных регистров: <br>
 DWORD PTR -4[rbp] -> r12d <br>
 <br>
+При редакции count_if_equals_element.s использовались: <br>
+DWORD PTR -4[rbp] -> r11d <br> (т.к. double word, используем 0-3 bytes)
+DWORD PTR -8[rbp] -> r12d <br>
+DWORD PTR -20[rbp] -> r13d <br>
+QWORD PTR -32[rbp] -> r14 <br> (т.к. quad word, используем 8-byte register)
+DWORD PTR -24[rbp] -> r15d <br>
 
 Критерий на 7. <br>
 Скомпилированы и отредактированы (к сожалению, не все...) программы на ассемблере, в виде 10 единиц компиляции (походу, зря...). <br>

@@ -700,14 +700,15 @@ endbr64, cdqe, cdq <br>
 DWORD PTR -4[rbp] -> r12d <br>
 <br>
 При редакции count_if_equals_element.s использовались: <br>
-DWORD PTR -4[rbp] -> r11d <br> (т.к. double word, используем 0-3 bytes)
+DWORD PTR -4[rbp] -> r11d (т.к. double word, используем 0-3 bytes) <br> 
 DWORD PTR -8[rbp] -> r12d <br>
 DWORD PTR -20[rbp] -> r13d <br>
-QWORD PTR -32[rbp] -> r14 <br> (т.к. quad word, используем 8-byte register)
+QWORD PTR -32[rbp] -> r14 (т.к. quad word, используем 8-byte register) <br> 
 DWORD PTR -24[rbp] -> r15d <br>
 
 Критерий на 7. <br>
 Скомпилированы и отредактированы (к сожалению, не все...) программы на ассемблере, в виде 10 единиц компиляции (походу, зря...). <br>
+// но единиц компиляции получилось отредактировать больше 2-х <br>
 Реализован файловый ввод/вывод (после имени исполняемого файла в командной строке достаточно ввести символ 2). <br>
 <br>
 

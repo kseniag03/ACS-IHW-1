@@ -645,7 +645,67 @@ count_if_equals_element:
 	ret					# выполняется выход из программы
 
 ```
+
 <br>
+
+random_generation.s
+
+```assembly
+.intel_syntax noprefix
+.text
+.globl	random_generation
+.type	random_generation, @function
+
+random_generation:
+	push	rbp
+	mov	rbp, rsp
+	sub	rsp, 32
+	mov	QWORD PTR -24[rbp], rdi
+
+	mov	edi, 0				# 1-й агрумент -- 0 (NULL)
+	call	time@PLT			# time(NULL)
+	mov	edi, eax			# 1-й агрумент -- возвращаемое знач. из time(NULL)
+	call	srand@PLT			# srand(time(NULL))
+	call	rand@PLT			# вызов ф-и rand()
+	mov	ecx, DWORD PTR SIZEMAX[rip]	# ecx := SIZEMAX
+	idiv	ecx				# % SIZEMAX
+
+	mov	rax, QWORD PTR -24[rbp]		# rax := *n
+	mov	DWORD PTR [rax], edx		# n = edx (rand())
+	mov	eax, DWORD PTR [rax]		# eax := n
+	test	eax, eax			# логическое сравнение (< 1)
+	jg	.TOLOOP				# если *n > 1, переход к объявлению i и циклу (TOLOOP)
+	mov	rax, QWORD PTR -24[rbp]
+	mov	eax, DWORD PTR [rax]		# eax := n
+	lea	edx, 1[rax]			# ++*n
+	mov	rax, QWORD PTR -24[rbp]		# rax := *n
+	mov	DWORD PTR [rax], edx		# n = edx
+
+.TOLOOP:
+	mov	r12d, 0				# i = 0
+	jmp	.LOOP				# переход к циклу LOOP
+
+.GENERATEELEM:
+	call	rand@PLT			# вызов ф-и rand()
+	mov	ecx, VALUEMAX[rip]		# ecx := VALUEMAX
+	idiv	ecx				# % VALUEMAX
+	mov	ecx, edx			#
+	mov	eax, r12d			#
+
+	lea	rdx, 0[0 + rax * 4]		# 		
+	lea	rax, ARRAY_A[rip]		#	
+	mov	DWORD PTR [rdx + rax], ecx	# 	
+	add	r12d, 1				# ++i
+
+.LOOP:
+	mov	rax, QWORD PTR -24[rbp]		# rax := *n
+	mov	eax, DWORD PTR [rax]		# eax := n
+	cmp	r12d, eax			# сравнение i и n
+	jl	.GENERATEELEM			# если i < n, переход к GENERATEELEM
+	leave					# очистка стека
+	ret					# выполняется выход из программы
+
+```
 
 ________________________
 
@@ -730,9 +790,9 @@ DWORD PTR -24[rbp] -> r15d <br>
 Таблица сравнений приведена ниже: <br>
 | Критерий	     	| Скомпилированный Си| С оптим. -O3	   | С оптим. -Os        | Отредактированный вручную после компиляции |       
 | ----------------------|:------------------:| :------------------:|:-------------------:|:------------------------------------------:|
-| размер асм-файла	| 15 631 байт        | 18 043 байт         | 13 603 байт         |                                            |
-| размер испол. файла	| 17 280 байт        | 17 360 байт         | 17 360 байт         |                                            |
-| время работы		| 387 918, 1 ns      | 221 510, 8 ns       | 293 939, 9 ns       |                                            |
+| размер асм-файла	| 15 631 байт        | 18 043 байт         | 13 603 байт         | 818 312 байт                               |
+| размер испол. файла	| 17 280 байт        | 17 360 байт         | 17 360 байт         | 24 879 байт                                |
+| время работы		| 387 918, 1 ns      | 221 510, 8 ns       | 293 939, 9 ns       | 1 236 683 ns                               |
 
 <br>
 // размер асм-файла == размер 10 файлов расширения .s (из папки time-size-check), исполняемый файл в этой же папке
@@ -783,6 +843,25 @@ DWORD PTR -24[rbp] -> r15d <br>
 246830 ns <br>
 <br>
 
-Скомп. Си c правками
-
+Скомп. Си c правками <br>
+1043691 ns <br>
+1548084 ns <br>
+2631135 ns <br>
+428167 ns <br>
+907633 ns <br>
+4232474 ns <br>
+69774 ns <br>
+585402 ns <br>
+404508 ns <br>
+515962 ns <br>
 <br>
+// кажется, я неправильно оптимизирую... <br>
+<br>
+
+По времени самый выгодный: с -O3 <br>
+По размеру файлов асм: с -Os <br>
+По размеру файла исполняемого: обычный компил с Си (но выигравает он не сильно) <br>
+<br>
+
+P.s. GitHub намекает на перекур?.. <br>
+![image](https://user-images.githubusercontent.com/114473740/197417161-3b3d8524-558c-42de-96ab-be03c33cac28.png) <br>

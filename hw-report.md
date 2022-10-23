@@ -33,7 +33,16 @@ argv[1] -- формат ввода (1 -- console, 2 -- file, else -- random gene
 
 Ввод с консоли: <br>
 ![Screenshot from 2022-10-23 18-45-30](https://user-images.githubusercontent.com/114473740/197401849-27f25f57-c8ba-4c25-8f75-f8923e6701ec.png)  <br>
+
 Ввод из файла: <br>
+![Screenshot from 2022-10-23 18-55-01](https://user-images.githubusercontent.com/114473740/197402839-094a08cb-d55a-44cb-b3b7-e58f5c2ea281.png)  <br>
+![Screenshot from 2022-10-23 18-57-26](https://user-images.githubusercontent.com/114473740/197402843-bf61e429-7d5d-42cc-86dd-74dd94bb4048.png)  <br>
+![Screenshot from 2022-10-23 18-57-40](https://user-images.githubusercontent.com/114473740/197402848-13ab9749-01e3-4b8a-bd8b-6495f2fe7fde.png)  <br>
+![Screenshot from 2022-10-23 18-58-05](https://user-images.githubusercontent.com/114473740/197402863-3d0101b4-21d5-43a4-b496-d90eb77bab40.png)  <br>
+![Screenshot from 2022-10-23 18-58-25](https://user-images.githubusercontent.com/114473740/197402867-b67e2fd3-3357-475e-bbcd-632e90c358ce.png)  <br>
+![Screenshot from 2022-10-23 18-58-54](https://user-images.githubusercontent.com/114473740/197402873-fff1f0c0-0d02-46cd-8d57-a1a523be33ca.png)  <br>
+![Screenshot from 2022-10-23 19-04-09](https://user-images.githubusercontent.com/114473740/197402876-d20870e6-dfa9-48db-8c02-4d9ddc620a42.png)  <br>
+
 Генератор: <br>
 
 ### 6. Исходные тексты программы на языке C. <br> ###

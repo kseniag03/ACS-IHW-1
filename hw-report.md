@@ -459,6 +459,10 @@ main:					# тело main
 ```
 <br>
 
+Стек переменных: <br>
+![main_stack](https://user-images.githubusercontent.com/114473740/197405043-2ef52153-8269-4fa7-9005-f7174bb80fa9.jpg) <br>
+<br>
+
 command_line_input.s
 
 ```assembly
